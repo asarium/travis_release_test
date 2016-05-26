@@ -31,6 +31,7 @@ before_install:
     # Exit build if it's not a release tag
     - echo "$TRAVIS_TAG"
     - if ([[ ! "$TRAVIS_TAG" =~ "^release.*" ]]); then exit 0 ; fi
+    - echo "Releasing!!"
 install:
 before_script:
 script:
