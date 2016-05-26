@@ -30,7 +30,8 @@ matrix:
 before_install:
     # Exit build if it's not a release tag
     - echo "$TRAVIS_TAG"
-    - if ([[ ! "$TRAVIS_TAG" =~ "^release.*" ]]); then exit 0 ; fi
+    - if ([[ ! "$TRAVIS_TAG" =~ "^release.*" ]]); then echo "Skipping non-release tag" ; exit 0 ; fi
+    - if ([[ "$TRAVIS_OS_NAME" == "linux" ]] && [[ "$CC" == "clang" ]]); then echo "Skipping non-release configuration" ; exit 0 ; fi
     - echo "Releasing!!"
 install:
 before_script:
