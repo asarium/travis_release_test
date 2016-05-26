@@ -31,11 +31,10 @@ before_install:
     # Exit build if it's not a release tag
     - export TEST_TAG=release_42
     - echo "$TEST_TAG"
-    - if [[ ! ("$TEST_TAG" =~ ^release.*) ]]; then echo "Skipping non-release tag" ; exit 0 ; fi
-    - if ([[ "$TRAVIS_OS_NAME" == "linux" ]] && [[ "$CC" == "clang" ]]); then echo "Skipping non-release compiler" ; exit 0 ; fi
-    - if ([[ "$TRAVIS_OS_NAME" == "osx" ]] && [[ "$MACOSX_ARCH" == "i386" ]]); then echo "Skipping non-release architecture" ; exit 0 ; fi
-    - if [[ "$CONFIGURATION" == "Debug" ]]; then echo "Skipping non-release configuration" ; exit 0 ; fi
-    - echo "Releasing!!"
-install:
-before_script:
+    - RELEASE_BUILD=true
+    - if [[ ! ("$TEST_TAG" =~ ^release.*) ]]; then echo "Skipping non-release tag" ; RELEASE_BUILD=false ; fi
+    - if ([[ "$TRAVIS_OS_NAME" == "linux" ]] && [[ "$CC" == "clang" ]]); then echo "Skipping non-release compiler" ; RELEASE_BUILD=false ; fi
+    - if ([[ "$TRAVIS_OS_NAME" == "osx" ]] && [[ "$MACOSX_ARCH" == "i386" ]]); then echo "Skipping non-release architecture" ; RELEASE_BUILD=false ; fi
+    - if [[ "$CONFIGURATION" == "Debug" ]]; then echo "Skipping non-release configuration" ; RELEASE_BUILD=false ; fi
 script:
+    - if [ "$RELEASE_BUILD" = true ] ; then echo "Releasing!"; else echo "Doing CI"; fi
